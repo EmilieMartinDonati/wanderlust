@@ -1,0 +1,3 @@
+keys for oAuth :
+- domain : dev-krwzyahzquw3xi4y.us.auth0.com
+- clientId : "HdLXXtl17kfIijcCUhybXDVbrQbxMcr0"

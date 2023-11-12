@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import classNames from "classnames";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 
 import Tree from "../public/images/tree.jpg";
 import Milky from "../public/images/milky.jpg";
@@ -15,17 +15,14 @@ import Bridge from "../public/images/bridge.jpg";
 import { createUseStyles } from "react-jss";
 import { useEffect } from "react";
 
-const useStyles = createUseStyles({
+const useStyles = createUseStyles((theme) =>({
   root: {
-    height: "100vh",
+    height: "100%",
     width: "100% !important",
-    // background: "navy",
     display: "flex",
-    // flexWrap: "nowrap",
-    // overflow: "hidden",
     justifyContent: "center",
     position: "relative",
-    paddingTop: '20px',
+    background: ({ backgroundColor }) => backgroundColor || "auto"
   },
   overlay: {
     opacity: 0.8,
@@ -81,11 +78,11 @@ const useStyles = createUseStyles({
     height: "20px",
     cursor: "pointer",
   },
-});
+}));
 
-const Carousel = ({ isModalOpen }) => {
+const PerspectiveCarousel = ({ isModalOpen, array = [], backgroundColor}) => {
   const myArray = [Tree, Milky, Bridge, Street, Beach, Play, Lake];
-  const [images, setImages] = useState(myArray);
+  const [images, setImages] = useState(array);
   const bigImg = useRef(null);
   const rootRef = useRef(null);
   const [inspectedWidth, setInspectedWidth] = useState(0);
@@ -103,9 +100,9 @@ const Carousel = ({ isModalOpen }) => {
     };
   }, []);
 
-  const classes = useStyles();
+  const classes = useStyles({backgroundColor});
 
-  const handleCentralImageClick = (image) => { };
+  // const handleCentralImageClick = (image) => { };
 
   const handleLeftClick = (index) => {
     let myNewArray = Array.from(images);
@@ -131,12 +128,14 @@ const Carousel = ({ isModalOpen }) => {
     });
   };
 
+
+
   return (
     <div
       ref={rootRef}
       className={classNames(classes.root, isModalOpen && classes.overlay)}
     >
-      {images.map((image, index) => {
+      {images.length !== 0 && images.map((image, index) => {
         let incorrectLength = myArray.length % 2 === 0;
         let middleIndex = Math.floor(myArray.length / 2);
         let originalWidth = inspectedWidth;
@@ -189,4 +188,4 @@ const Carousel = ({ isModalOpen }) => {
   );
 };
 
-export default Carousel;
+export default PerspectiveCarousel

@@ -21,6 +21,12 @@ import OwnerCalendar from "./components/ownerflow/calendar/OwnerCalendar";
 import SomeFormContainer from "./components/traveller/ratingsOpinions/SomeFormContainer";
 import View from "./components/View";
 
+import MainHeader from "./components/commons/mainHeader/MainHeader";
+
+import ProtectedConnectedRoute from "./ProtectedConnectedRoute";
+import ProtectedOwnerRoute from "./ProtectedOwnerRoute";
+import ProtectedAdminRoute from "./ProtectedAdminRoute";
+
 import { Auth0Provider } from "@auth0/auth0-react";
 
 /** data fetching, handling stale, caching etc */
@@ -28,6 +34,8 @@ import { QueryClient, QueryClientProvider } from "react-query";
 
 
 import Home from "./components/Home";
+
+import LandingPage from "./components/landing/landingPage";
 
 import AnimationsContainer from "./components/animationsInProgress/AnimationsContainer";
 
@@ -74,7 +82,7 @@ function App() {
       }
     }
 
-  }, [currentUser])
+  }, [currentUser])   // transform this into a custom hook
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -86,7 +94,7 @@ function App() {
         }}
       >
         <div className="App">
-          <Header
+          <MainHeader
             down={scrollPosition > 20}
             toggleModal={toggleModal}
             isModalOpen={isProfileModalOpen}
@@ -94,12 +102,12 @@ function App() {
           {isProfileModalOpen && <ModalProfile />}
           <Routes>
             {/* <Route path='/' element={<} */}
-            <Route path='/' element={<Home />} />
+            <Route path='/' element={<LandingPage loadingFunction={() => console.log("OI LOADING FN")} />}  />
             <Route path='/owner'>
               <Route path="register" />
               <Route path="listings">
-                <Route path='create' element={<CreateListingContainer />} />
-                <Route path='list' />
+                <Route path='create' element={<CreateListingContainer />}/>
+                <Route path='list' />     {/* list of listings */}
               </Route>
             </Route>
             <Route path="/View" element={<View />} />

@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { isDay } from "../store/index";
 import { Link } from "react-router-dom";
 
-const useStyles = createUseStyles({
+const useStyles = createUseStyles((theme) => ({
   header: {
     width: "100%",
     height: "100px",
@@ -19,6 +19,7 @@ const useStyles = createUseStyles({
     padding: "0 10px 0",
     paddingRight: "10px",
     zIndex: 200,
+    backgroundColor: theme.colors.blue.primary
   },
   navbar: {
     flex: "0 1 90%",
@@ -60,7 +61,7 @@ const useStyles = createUseStyles({
     transform: "translate(50%)",
   },
   animateRightToLeft: {},
-});
+}));
 
 const Header = ({ down = false, toggleModal, isModalOpen }) => {
   const location = useSelector((state) => state.actionsApp.location);
@@ -81,7 +82,6 @@ const Header = ({ down = false, toggleModal, isModalOpen }) => {
   return (
     <div
       className={classes.header}
-      style={{ background: "slateblue", color: 'white' }}
     >
         <Link to='/calendar'>MY CALENDAR</Link>
       <div

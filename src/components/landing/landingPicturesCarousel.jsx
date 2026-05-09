@@ -15,7 +15,7 @@ const LandingPicturesCarousel = () => {
 
   const landingProvisionalArray = [Tree, Milky, Bridge, Street, Beach, Play, Lake]; // actually images defined from bo and stored into database
 
-  return <div style={{padding: "20px", background: THEME.colors.yellow.sand}}><PerspectiveCarousel array={landingProvisionalArray} /></div>
+  return <div style={{padding: "20px", background: THEME.colors.bisque[100]}}><PerspectiveCarousel array={landingProvisionalArray} /></div>
 
 }
 

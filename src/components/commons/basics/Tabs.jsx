@@ -19,7 +19,7 @@ const useStyles = createUseStyles((theme) => ({
     fontSize: 14
   },
   hoveredTab: {
-    borderBottom: `4px solid ${theme.colors.blue.marineBlue}`
+    borderBottom: `4px solid ${theme.colors.tide[300]}`
   },
   selectedTab: {
   }

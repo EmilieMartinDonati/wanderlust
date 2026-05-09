@@ -19,7 +19,7 @@ const useStyles = createUseStyles((theme) => ({
     padding: "0 10px 0",
     paddingRight: "10px",
     zIndex: 200,
-    backgroundColor: theme.colors.blue.primary
+    backgroundColor: theme.colors.tide[500]
   },
   navbar: {
     flex: "0 1 90%",
@@ -67,7 +67,7 @@ const Header = ({ down = false, toggleModal, isModalOpen }) => {
   const location = useSelector((state) => state.actionsApp.location);
 
   const isItDay = useSelector(isDay);
-  const classes = useStyles(isItDay);
+  const classes = useStyles();
   const dispatch = useDispatch();
 
   const [animate, setAnimate] = useState(false);

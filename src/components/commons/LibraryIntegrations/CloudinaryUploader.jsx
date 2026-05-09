@@ -24,9 +24,6 @@ const CloudinaryUploader = ({id, name, type, displayMedia = () => {} }) => {
     displayMedia(newImage);
   }
 
-
-
-
   return (<div>
     <input type='file' hidden ref={mediaRef} id={id} name='name' accept='image/*' onChange={onChangeMedia} />
   </div>)

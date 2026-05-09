@@ -4,13 +4,13 @@ import { useState, useEffect } from "react";
 import ProfileHeader from "./profile/profileHeader";
 import ProfileContent from './profile/profileContent';
 
-const useStyles = createUseStyles({
+const useStyles = createUseStyles((theme) => ({
   root: {
     position: "absolute",
     background: "white",
     width: "30%",
-    zIndex: 21,
-    top: "100px",
+    zIndex: theme.zIndexes.modal,
+    top: 0,
     right: 0,
     height: `calc(100vh + 100px)`,
     borderRadius: "1O%",
@@ -19,7 +19,7 @@ const useStyles = createUseStyles({
   content: {
     padding: "25px",
   }
-});
+}));
 
 const ModalProfile = () => {
   const [step, setStep] = useState(1);

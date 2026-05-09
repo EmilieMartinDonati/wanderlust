@@ -11,7 +11,7 @@ const useStyles = createUseStyles((theme) => ({
     display: "flex",
     alignItems: "stretch",
     padding: "8px 20px 0px 20px",
-    borderBottom: `1px solid ${theme.colors.green.petulant}`
+    borderBottom: `1px solid ${theme.colors.green[500]}`
   },
   leftMenu: {
     display: "flex",
@@ -49,12 +49,12 @@ const useStyles = createUseStyles((theme) => ({
       textCecoration: "none"
     },
     "&:hover": {
-      background: theme.colors.blue.marineBlue
+      background: theme.colors.tide[300]
     }
   }
 }))
 
-const MainHeaderMenu = () => {
+const MainHeaderMenu = ({ onRegister }) => {
 
   const classes = useStyles()
 
@@ -76,16 +76,17 @@ const MainHeaderMenu = () => {
       </div>
       <div className={classes.centralContent}><img className={classes.logo} src={WanderLustLogo} alt="WanderLust Logo" /></div>
       <div className={classes.rightMenu}>
-        <Link className={classes.menuAction}
-          to="/">
+        <div className={classes.menuAction}
+          onClick={onRegister}>
           S'inscrire
-        </Link>
+        </div>
         <Link className={classes.menuAction}
           to="/">
           Se connecter
         </Link>
         <Link className={classes.menuAction}
-          to="/">
+        to="/"
+          >
           Se déconnecter
         </Link>
       </div>

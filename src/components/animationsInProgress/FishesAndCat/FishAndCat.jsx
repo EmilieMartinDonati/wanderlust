@@ -70,10 +70,6 @@ const useStyles = createUseStyles(() => ({
      }
 }))
 
-
-
-
-
 const FishAndCat = ({ }) => {
 
      const classes = useStyles();

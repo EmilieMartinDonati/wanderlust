@@ -13,6 +13,8 @@ import { getCurrentUser } from '../../store';
 
 const CreateListingContainer = () => {
 
+  console.log("quiiii")
+
 
   const user = useSelector(getCurrentUser)
 

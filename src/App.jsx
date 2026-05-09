@@ -1,10 +1,7 @@
 import "./App.css";
 import { useState, useEffect } from "react";
 import {
-  Routes, Route,
-  //  createBrowserRouter,
-  // RouterProvider,
-  // useLoaderData,
+  Routes, Route
 } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Calendar from "./components/Calendar";
@@ -101,7 +98,6 @@ function App() {
           />
           {isProfileModalOpen && <ModalProfile />}
           <Routes>
-            {/* <Route path='/' element={<} */}
             <Route path='/' element={<LandingPage loadingFunction={() => console.log("OI LOADING FN")} />}  />
             <Route path='/owner'>
               <Route path="register" />

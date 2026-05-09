@@ -1,10 +1,8 @@
 const createUrl = (baseUrl) => {
   return (path) => {
-    let protocol = "https";
-    let separator = "/";
-    let url = protocol + separator + baseUrl;
+    let url = "https" + "/" + baseUrl;
     if (!!path) {
-      let suffix = separator + path
+      let suffix = "/" + path
       url += suffix;
     }
     return url;

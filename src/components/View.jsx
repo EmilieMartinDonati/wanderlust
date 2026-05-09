@@ -20,7 +20,7 @@ const View = ({}) => {
   const isItDay = useSelector((state) => state.actionsApp.isDay);
   const isModalOpen = useSelector((state) => state.actionsApp.isProfileModalOpen);
 
-  const classes = useStyles(isItDay);
+  const classes = useStyles();
   return (
       <div
         className={classNames(classes.root, isModalOpen && classes.overlay)}

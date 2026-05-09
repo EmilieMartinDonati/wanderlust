@@ -17,19 +17,19 @@ const useStyles = createUseStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "space-between",
     zIndex: theme.zIndexes.mainHeader,
-    backgroundColor: theme.colors.blue.primary
+    backgroundColor: theme.colors.tide[500]
   },
 }));
 
-const MainHeader = () => {
+const MainHeader = ({ toggleModal }) => {
   const user = useSelector(getCurrentUser)
   const classes = useStyles()
 
   return (<div className={classes.header}>
-    <MainHeaderMenu />
+    <MainHeaderMenu onRegister={toggleModal}/>
     <MainHeaderTabsContainer user={user} />
   </div>)
-  
+
 }
 
 export default MainHeader

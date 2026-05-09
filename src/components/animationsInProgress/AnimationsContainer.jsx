@@ -41,7 +41,9 @@ const AnimationsContainer = () => {
     return () => clearInterval(interval); // Clean up the interval on component unmount
   }, []);
 
-  return (<div className={classes.root}>{/**<CandleSpringAnimation key={counter}/>**/}<FishAndCat/></div>);
+  return (<div className={classes.root}>
+    <CandleSpringAnimation key={counter}/>*
+    <FishAndCat/></div>);
 };
 
 

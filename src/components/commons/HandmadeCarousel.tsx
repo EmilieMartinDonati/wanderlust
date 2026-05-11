@@ -22,10 +22,8 @@ const IMAGE_WIDTH = 400;
 const useStyles = createUseStyles((theme) => ({
   '@keyframes leftMargin': {
     '0%': {
-      // voir comment je peux animer ce truc moi.
     },
     '100%': {
-  // voir comment je peux animer ce truc moi.
     }
   },
   rootContainer: {
@@ -35,7 +33,7 @@ const useStyles = createUseStyles((theme) => ({
     justifyContent: 'space-between',
     gap: GUTTER_SIZE,
     paddingLeft: GUTTER_SIZE,
-    maxWidth: GUTTER_SIZE + IMAGE_WIDTH, /** ultra important to make sure we only display one image at a time, the rest are hidden until we displace the negative margin */
+    maxWidth: GUTTER_SIZE + IMAGE_WIDTH,
     minWidth: GUTTER_SIZE + IMAGE_WIDTH,
     width: GUTTER_SIZE + IMAGE_WIDTH,
     overflow: 'hidden',
@@ -56,10 +54,10 @@ const useStyles = createUseStyles((theme) => ({
     cursor: 'pointer',
   },
   imagesContainer: {
-    maxWidth: GUTTER_SIZE * 2 + IMAGE_WIDTH, /** ultra important to make sure we only display one image at a time */
+    maxWidth: GUTTER_SIZE * 2 + IMAGE_WIDTH,
     minWidth: GUTTER_SIZE * 2 + IMAGE_WIDTH,
     width: GUTTER_SIZE * 2 + IMAGE_WIDTH,
-    marginLeft: ({ margin }) => margin,  /** it becomes negative to show next slide on carousel and hide previous */
+    marginLeft: ({ margin }: { margin: number; numberOfImagesOnDisplay: number }) => margin,
     display: 'flex',
     gap: GUTTER_SIZE,
     justifyContent: 'space-between',
@@ -74,12 +72,21 @@ const useStyles = createUseStyles((theme) => ({
   }
 }));
 
-const HandmadeCarousel = ({ mode = 'image', leap = 3, data = [], numberOfImagesOnDisplay = 1,  /** setMarginLeft, marginLedt, currentIndex, setCurrentIndex should be there */ }) => {
+type CarouselMode = 'image'
 
-  /** carousel implemented w/ layout only 
+interface HandmadeCarouselProps {
+  mode?: CarouselMode
+  leap?: number
+  data?: unknown[]
+  numberOfImagesOnDisplay?: number
+}
+
+const HandmadeCarousel = ({ mode = 'image', leap = 3, data = [], numberOfImagesOnDisplay = 1 }: HandmadeCarouselProps) => {
+
+  /** carousel implemented w/ layout only
    * maybe not the best practise ^^
-   * leap should not be enabled but it's if we want to 
-   * The image tag could be wrapped inside a motion div to make it smooth ... 
+   * leap should not be enabled but it's if we want to
+   * The image tag could be wrapped inside a motion div to make it smooth ...
    * Not sure how I can do that
    * We can change the number of images/elem on display if we want (right now it is only one)
    * It should be equal to the leap actually.
@@ -92,7 +99,7 @@ const HandmadeCarousel = ({ mode = 'image', leap = 3, data = [], numberOfImagesO
 
 
   const [marginLeft, setMarginLeft] = useState(0);
-  const [currentIndex, setCurrentIndex] = useState(0);  /** we can't go forward or back if the index exceeds the array length or is first */
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const arrayTest = [Tree, Milky, Lake, Street, Beach, Play, Bridge];
                      // 0 .  410    820  1230   1640   2050
@@ -107,9 +114,9 @@ const HandmadeCarousel = ({ mode = 'image', leap = 3, data = [], numberOfImagesO
   const classes = useStyles({ margin, numberOfImagesOnDisplay });
 
 
-  const _getContent = (elem, index) => {
+  const _getContent = (elem: string, index: number) => {
     switch (mode) {
-      case "image": 
+      case "image":
       return <img className={classes.eachImage} key={index} src={elem} />
       default :
       return <div className={classes.eachImage} key={index}>{elem}</div>
@@ -118,7 +125,7 @@ const HandmadeCarousel = ({ mode = 'image', leap = 3, data = [], numberOfImagesO
 
 
   const _onGoForward = () => {
-    const _handleGoForward = (index) => {
+    const _handleGoForward = (index: number) => {
       if (index === MAX_INDEX_FORWARD) {
         setCurrentIndex(0);
         setMarginLeft(0);
@@ -129,10 +136,10 @@ const HandmadeCarousel = ({ mode = 'image', leap = 3, data = [], numberOfImagesO
       else {
         let putativeFutureIndex = index + leap;
         if (putativeFutureIndex >= MAX_INDEX_FORWARD) {
-            _handleGoForward(index - 1); /** retry with a less ambitious index could be done with a while loop ? */
+            _handleGoForward(index - 1);
         }
         setCurrentIndex(index + leap);
-        setMarginLeft(marginLeft - MODIFIER);  /** - 410 each time we change the index */
+        setMarginLeft(marginLeft - MODIFIER);
         marginLeftRef.current = index + leap;
         currentIndexRef.current = marginLeft - MODIFIER;
       }
@@ -142,7 +149,7 @@ const HandmadeCarousel = ({ mode = 'image', leap = 3, data = [], numberOfImagesO
 
   const _onGoBack = () => {
 
-    const _handleGoBack = (index) => {
+    const _handleGoBack = (index: number) => {
       if (index === MIN_INDEX_BACK) {
         setCurrentIndex(arrayTest.length - 1);
         let maxNegativeMargin = ( MODIFIER / leap) * (arrayTest.length - 1);
@@ -152,7 +159,6 @@ const HandmadeCarousel = ({ mode = 'image', leap = 3, data = [], numberOfImagesO
         return;
       }
       else {
-        /** to handle leap cases, we have to recurse here */
         let putativeFutureIndex = index - leap;
         if ((putativeFutureIndex) <= MIN_INDEX_BACK) {
           _handleGoBack(index + 1);

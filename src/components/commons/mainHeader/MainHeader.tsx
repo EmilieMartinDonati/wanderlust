@@ -1,14 +1,16 @@
 import React from "react"
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../../store/hook";
 import { createUseStyles } from "react-jss";
+import type { Theme } from "../../../styles/theme";
 
 export const HEADER_HEIGHT = 200
 
 import MainHeaderMenu from "./MainHeaderMenu";
 import MainHeaderTabsContainer from "./MainHeaderTabsContainer";
-import { getCurrentUser } from "../../../store";
 
-const useStyles = createUseStyles((theme) => ({
+import { getCurrentUser } from "../../../reducers/app";
+
+const useStyles = createUseStyles((theme: Theme) => ({
   header: {
     width: "100%",
     position: "fixed",
@@ -21,8 +23,12 @@ const useStyles = createUseStyles((theme) => ({
   },
 }));
 
-const MainHeader = ({ toggleModal }) => {
-  const user = useSelector(getCurrentUser)
+interface MainHeaderProps {
+  toggleModal: () => void
+}
+
+const MainHeader = ({ toggleModal }: MainHeaderProps) => {
+  const user = useAppSelector(getCurrentUser)
   const classes = useStyles()
 
   return (<div className={classes.header}>

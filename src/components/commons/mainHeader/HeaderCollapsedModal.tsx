@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import Button from "../Button";
 import { createUseStyles } from "react-jss";
 
@@ -14,7 +14,14 @@ const useStyles = createUseStyles(() => ({
   }
 }))
 
-const HeaderCollapsedModal = ({ modalContent, open = true, onClose }) => {
+interface HeaderCollapsedModalProps {
+  modalContent: React.ReactNode
+  open?: boolean
+  onClose: () => void
+  onConfirm?: () => void
+}
+
+const HeaderCollapsedModal = ({ modalContent, open = true, onClose, onConfirm }: HeaderCollapsedModalProps) => {
 
   const classes = useStyles()
 

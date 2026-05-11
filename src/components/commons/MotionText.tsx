@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useLayoutEffect } from "react";
+import React from "react";
 
 import { createUseStyles } from "react-jss";
 
@@ -11,7 +11,12 @@ const useStyles = createUseStyles((theme) => ({
   }
 }))
 
-const MotionText = ({ children, title = 'Salut' }) => {
+interface MotionTextProps {
+  children?: React.ReactNode
+  title?: string
+}
+
+const MotionText = ({ children, title = 'Salut' }: MotionTextProps) => {
 
   const classes = useStyles();
 
@@ -19,14 +24,14 @@ const MotionText = ({ children, title = 'Salut' }) => {
     width: "100%",
     alignSelf: 'start',
     height: 50,
-    textAlign: 'start',
-    position: 'relative',
+    textAlign: 'start' as const,
+    position: 'relative' as const,
   }
 
   const style = {
     left: 0,
-    whiteSpace: 'no-wrap',
-    position: 'absolute',
+    whiteSpace: 'no-wrap' as const,
+    position: 'absolute' as const,
   }
 
   const initial = {

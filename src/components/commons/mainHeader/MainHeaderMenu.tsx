@@ -1,12 +1,13 @@
 import React from "react"
 
 import { createUseStyles } from "react-jss"
+import type { Theme } from "../../../styles/theme"
 
 import WanderLustLogo from "../../../public/images/logos/wanderlust_logo.png"
 
 import { Link } from "react-router-dom"
 
-const useStyles = createUseStyles((theme) => ({
+const useStyles = createUseStyles((theme: Theme) => ({
   mainHeaderMenuRoot: {
     display: "flex",
     alignItems: "stretch",
@@ -54,7 +55,11 @@ const useStyles = createUseStyles((theme) => ({
   }
 }))
 
-const MainHeaderMenu = ({ onRegister }) => {
+interface MainHeaderMenuProps {
+  onRegister: () => void
+}
+
+const MainHeaderMenu = ({ onRegister }: MainHeaderMenuProps) => {
 
   const classes = useStyles()
 

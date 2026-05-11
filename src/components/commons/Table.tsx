@@ -1,8 +1,12 @@
-import {useState, useEffect} from 'react';
-
 import ModulableTableHeader from './modulableTableHeader';
 import ModulableTableBody from './ModulableTableBody';
 
+export type TableHeader = { name: string; label?: string }
+
+interface ModulableTableProps {
+  headers?: TableHeader[]
+  data?: unknown[]
+}
 
 /** reminder that in CSS it looks like this :
  * <table>
@@ -10,8 +14,7 @@ import ModulableTableBody from './ModulableTableBody';
  * </table>
  */
 
-
-const ModulableTable = ({ headers = [], data = []}) => {
+const ModulableTable = ({ headers = [], data = []}: ModulableTableProps) => {
 
   return (<table>
     <ModulableTableHeader headers={headers}/>

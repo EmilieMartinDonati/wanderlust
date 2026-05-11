@@ -2,7 +2,7 @@ import React from "react";
 
 import { createUseStyles } from "react-jss";
 
-import { CENTRAL_MODAL_HEADER_HEIGHT } from "../../actions/layout";
+import { CENTRAL_MODAL_HEADER_HEIGHT } from "../../styles/theme";
 
 const useStyles = createUseStyles((theme) => ({
   root: {
@@ -37,15 +37,21 @@ const useStyles = createUseStyles((theme) => ({
   },
 }));
 
-const ModalNavigation = ({ title = "Mes informations", onGoBack, onGoForward }) => {
+interface ModalNavigationProps {
+  title?: string
+  onGoBack?: () => void
+  onGoForward?: () => void
+}
+
+const ModalNavigation = ({ title = "Mes informations", onGoBack, onGoForward }: ModalNavigationProps) => {
   const classes = useStyles();
 
-  const onClickImage = (e, forward = true) => {
+  const onClickImage = (e: React.MouseEvent, forward = true) => {
     e.stopPropagation();
     forward && !!onGoForward ? onGoForward() : !!onGoBack ? onGoBack() : null;
   };
 
-  const imageStyle = {
+  const imageStyle: React.CSSProperties = {
     height: "10px",
     width: "10px",
     cursor: "pointer",

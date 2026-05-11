@@ -1,13 +1,19 @@
+type MediaType = 'audio' | 'video' | 'image'
 
+interface MediaReaderProps {
+  type: MediaType
+  src: string
+  className?: string
+}
 
-const MediaReader = ({ type, src, className = '' }) => {
+const MediaReader = ({ type, src, className = '' }: MediaReaderProps) => {
 
   console.log('tupe', type);
 
-  let usedComponent;
+  let usedComponent: React.ReactNode;
   switch (type) {
     case 'audio':
-      usedComponent = <div style={{ border: '2px red solid' }}><audio autoPlay='true' controls preload="auto">
+      usedComponent = <div style={{ border: '2px red solid' }}><audio autoPlay controls preload="auto">
         <source src={src} type="audio/mpeg" />
         <source src={src} type="audio/ogg" />
         <a href={src}>download audio</a>

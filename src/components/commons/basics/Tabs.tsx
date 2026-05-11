@@ -3,8 +3,9 @@ import React from "react"
 import classNames from "classnames"
 
 import { createUseStyles } from "react-jss"
+import type { Theme } from "../../../styles/theme"
 
-const useStyles = createUseStyles((theme) => ({
+const useStyles = createUseStyles((theme: Theme) => ({
   tabsRoot: {
     display: "flex",
     justifyContent: "space-around",
@@ -15,7 +16,6 @@ const useStyles = createUseStyles((theme) => ({
     borderBottom: "4px solid transparent",
     color: "white",
     padding: "8px 8px 8px 8px",
-    cursor: "pointer",
     fontSize: 14
   },
   hoveredTab: {
@@ -25,7 +25,25 @@ const useStyles = createUseStyles((theme) => ({
   }
 }))
 
-const Tabs = ({ tabs = [], selectedTabKey = null, hoveredTabKey, interactions }) => {
+export interface Tab {
+  key: string
+  label: string
+}
+
+interface TabInteractions {
+  onHoverTab: (key: string) => void
+  onLeaveTab: (key?: string) => void
+  onSelectTab: (key: string) => void
+}
+
+interface TabsProps {
+  tabs?: Tab[]
+  selectedTabKey?: string | null
+  hoveredTabKey?: string | null
+  interactions?: TabInteractions
+}
+
+const Tabs = ({ tabs = [], selectedTabKey = null, hoveredTabKey, interactions }: TabsProps) => {
 
   const classes = useStyles()
 
@@ -38,12 +56,13 @@ const Tabs = ({ tabs = [], selectedTabKey = null, hoveredTabKey, interactions })
   return (
     <div className={classes.tabsRoot}>{tabs.map(({ key, label }) => (
       <div
+        key={key}
         className={classNames(classes.singleTab, { [classes.hoveredTab]: hoveredTabKey === key }, { [classes.selectedTab]: selectedTabKey === key })}
-        onTouchStart={() => onHoverTab(key)}
-        onMouseEnter={() => onHoverTab(key)}
-        onTouchEnd={() => onLeaveTab(key)}
-        onMouseLeave={() => onLeaveTab(key)}
-        onClick={() => onSelectTab(key)}
+        onTouchStart={() => onHoverTab?.(key)}
+        onMouseEnter={() => onHoverTab?.(key)}
+        onTouchEnd={() => onLeaveTab?.(key)}
+        onMouseLeave={() => onLeaveTab?.(key)}
+        onClick={() => onSelectTab?.(key)}
       >
         {label}
       </div>

@@ -20,13 +20,22 @@ const useStyles = createUseStyles((theme) => ({
   }
 }))
 
-const RedirectionItem = ({ mainContent, secondaryContent = null, usedIcon = null, onRedirect, bottomBordered = true, enhanced = false }) => {
+interface RedirectionItemProps {
+  mainContent: React.ReactNode
+  secondaryContent?: React.ReactNode | null
+  usedIcon?: string | null
+  onRedirect: () => void
+  bottomBordered?: boolean
+  enhanced?: boolean
+}
+
+const RedirectionItem = ({ mainContent, secondaryContent = null, usedIcon = null, onRedirect, bottomBordered = true, enhanced = false }: RedirectionItemProps) => {
 
   const classes = useStyles();
 
   const imageSrc = usedIcon || '../src/public/images/eye.png';
 
-  const style = { display: 'flex', justifyContent: 'space-between', width: '100%' };
+  const style: React.CSSProperties = { display: 'flex', justifyContent: 'space-between', width: '100%' };
   if (bottomBordered) {
     style.borderBottom = '2px solid grey';
   }

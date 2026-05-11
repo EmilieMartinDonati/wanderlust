@@ -1,7 +1,15 @@
 import { selectedCardStyle, remoteCardStyle, simpleCardStyle } from "./card.css";
 
-const Card = ({ index, arr, selected = false, title, onSelect }) => {
- 
+interface CardProps {
+  index: number
+  arr: unknown[]
+  selected?: boolean
+  title: string
+  onSelect: (index: number) => void
+}
+
+const Card = ({ index, arr, selected = false, title, onSelect }: CardProps) => {
+
   /** process remoteness of the card based on the center of the array */
   const arrayCenter = Math.floor(arr.length / 2); /** eg length is 10, arrayMean is 5 */
   /** is remote === index [0, 1, 8, 9] */

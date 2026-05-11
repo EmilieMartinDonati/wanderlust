@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useFormContext } from "react-hook-form";
 
 import FormFieldWrapper from "./FormFieldWrapper";
 import StarFormField from "../traveller/ratingsOpinions/StarFormField";
@@ -13,6 +12,35 @@ import {
   inputContainerStyle,
 } from "./stylesheets/formfield.css";
 
+type SelectOption = { id: string | number; label: string }
+
+type FieldType = 'media' | 'stars' | 'checkbox' | 'customCheckbox' | 'select' | 'number' | 'text' | 'textArea'
+
+interface WrappedFormFieldProps {
+  inputClassName?: string
+  value?: string | number
+  type?: FieldType
+  name?: string
+  label?: string
+  id?: string
+  options?: SelectOption[]
+  min?: number
+  max?: number
+  labelEnabled?: boolean
+  labelClassName?: string
+  defaultValue?: string | number | null
+  defaultOption?: string | null
+  placeholder?: string | null
+  icon?: React.ReactNode | null
+  autoComplete?: boolean
+  readOnly?: boolean
+  field?: React.InputHTMLAttributes<HTMLInputElement>
+  onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  onBlur?: React.FocusEventHandler<HTMLInputElement>
+  errorMessage?: string
+  multiple?: boolean
+}
+
 const WrappedFormField = ({
   inputClassName,
   value,
@@ -23,7 +51,6 @@ const WrappedFormField = ({
   options = [],
   min,
   max,
-  ref = null,
   labelEnabled = true,
   labelClassName = "",
   defaultValue = null,
@@ -36,21 +63,22 @@ const WrappedFormField = ({
   onChange = () => {},
   onBlur,
   errorMessage,
+  multiple = false,
   ...rest
-}) => {
+}: WrappedFormFieldProps) => {
   /** for use with formik */
 
   useEffect(() => {
     if (min || (max && type === "number")) {
       const elem = document.querySelector(`input[name="${name}"]`);
       if (elem) {
-        min && elem.setAttribute("min", min);
-        max && elem.setAttribute("max", max);
+        min && elem.setAttribute("min", String(min));
+        max && elem.setAttribute("max", String(max));
       }
     }
   }, [min, max]);
 
-  let usedComponent;
+  let usedComponent: React.ReactNode;
 
   switch (type) {
     case "media":
@@ -59,7 +87,7 @@ const WrappedFormField = ({
             type="file"
             accept="image/*, video/*, audio/*"
             className={inputClassName || inputStyle}
-            onChange={onChange}
+            onChange={onChange as React.ChangeEventHandler<HTMLInputElement>}
             name={name}
           />
       );
@@ -82,7 +110,7 @@ const WrappedFormField = ({
             type="checkbox"
             value={value}
             name={name}
-            onClick={onChange}
+            onClick={onChange as unknown as React.MouseEventHandler<HTMLInputElement>}
             className={inputClassName || inputStyle}
           />
       );
@@ -91,19 +119,18 @@ const WrappedFormField = ({
       usedComponent = (
         <SwitchItem
           type="checkbox"
-          value={value}
-          onComplete={onChange}
+          value={!!value}
+          onComplete={() => onChange && (onChange as () => void)()}
           name={name}
         />
     );
     break;
     case "select":
-      const {multiple = false} = rest;
       usedComponent = (
-          <select name={name} id={name} onChange={onChange}>
+          <select name={name} id={name} onChange={onChange as React.ChangeEventHandler<HTMLSelectElement>}>
             {options &&
               options.map(({ id, label }) => (
-                <option value={id}>{label}</option>
+                <option key={id} value={id}>{label}</option>
               ))}
           </select>
       );
@@ -115,7 +142,7 @@ const WrappedFormField = ({
             className={inputClassName || inputStyle}
             name={name}
             value={value}
-            onChange={onChange}
+            onChange={onChange as React.ChangeEventHandler<HTMLInputElement>}
           />
       );
       break;
@@ -126,7 +153,7 @@ const WrappedFormField = ({
             className={inputClassName || inputStyle}
             value={value}
             {...field}
-            onChange={onChange}
+            onChange={onChange as React.ChangeEventHandler<HTMLInputElement>}
             name={name}
           />
       );
@@ -137,7 +164,7 @@ const WrappedFormField = ({
             className={inputClassName || inputStyle}
             value={value}
             name={name}
-            onChange={onChange}
+            onChange={onChange as React.ChangeEventHandler<HTMLTextAreaElement>}
             rows={16}
             cols={32}
           />
@@ -149,7 +176,7 @@ const WrappedFormField = ({
             type="text"
             className={inputClassName || inputStyle}
             name={name}
-            onChange={onChange}
+            onChange={onChange as React.ChangeEventHandler<HTMLInputElement>}
             value={value}/>
       );
       break;

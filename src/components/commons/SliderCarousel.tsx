@@ -1,8 +1,8 @@
 import SlickSlider from 'react-slick';
+import type { Settings } from 'react-slick';
+import React from 'react';
 
 import { createUseStyles } from "react-jss";
-
-// const GUTTER = 16;
 
 const useStyles = createUseStyles((theme) => ({
   root: {
@@ -30,10 +30,8 @@ const useStyles = createUseStyles((theme) => ({
     overflow: 'hidden',
     position: 'relative',
 		flex: 1,
-		display: 'flex', // we can't use composes because of the order of the css declaration,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-		flexDirection: 'column',
+		display: 'flex',
+    flexDirection: 'column',
     height: 200,
     border: '2px red solid',
 		'& .slick-list': {
@@ -57,7 +55,7 @@ const useStyles = createUseStyles((theme) => ({
       height: "50vh",
 		},
     '& .slick-cloned': {
-			// visibility: 'hidden',  /** the items are cloned when setting is set to infinite 'true'  */
+			// visibility: 'hidden',
 		},
     '& .slick-arrow': {
      zIndex: 1800,
@@ -68,12 +66,10 @@ const useStyles = createUseStyles((theme) => ({
      position: 'fixed',
     },
     '& .slick-prev': {
-      // position: 'absolute',
       left: '0 !important',
 		},
     '& .slick-next': {
-			// position: 'absolute',
-      right: '0 !important',
+			right: '0 !important',
 		},
     '& .slick-dots': {
 			display: 'flex !important',
@@ -97,14 +93,19 @@ const useStyles = createUseStyles((theme) => ({
 	}
 }))
 
-const SliderCarousel = ({ items, settings }) => {
+interface SliderCarouselProps {
+  items: React.ReactNode
+  settings?: Settings
+}
+
+const SliderCarousel = ({ items, settings }: SliderCarouselProps) => {
 
   const classes = useStyles();
 
   /** i'm not seeing the arrow and dots because of overflow 'hidden" so had to put them as fixed or sticky which is pretty horrible */
 
   return <SlickSlider className={classes.slick} {...settings}>{items}</SlickSlider>
-  
+
 }
 
 export default SliderCarousel;

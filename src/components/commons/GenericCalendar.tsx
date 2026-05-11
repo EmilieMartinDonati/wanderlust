@@ -10,6 +10,21 @@ import {
 } from "../../actions/dateFormatting";
 import MotionText from "./MotionText";
 
+type DateValue = Date | Date[] | null
+
+interface BookedTimeSpan {
+  startDate: string
+  endDate: string
+}
+
+interface GenericCalendarProps {
+  dateRange: DateValue
+  setDateRange: (value: DateValue) => void
+  bookedTimeSpans?: BookedTimeSpan[]
+  isOpenModal: boolean
+  setIsOpenModal: (value: boolean) => void
+}
+
 /** je vais m'amuser avec les pseudo selectors moi pour le coup */
 
 const useStyles = createUseStyles((theme) => ({
@@ -30,14 +45,14 @@ const GenericCalendar = ({
   bookedTimeSpans = [],
   isOpenModal,
   setIsOpenModal,
-}) => {
+}: GenericCalendarProps) => {
   const classes = useStyles();
 
   /** transform date format */
   let reformattedTimeSpans = useRef(new Map());
 
   useEffect(() => {
-    let timeSpans = [];
+    let timeSpans: Array<{ startDate: Date; endDate: Date }> = [];
     for (const span of bookedTimeSpans) {
       let obj = {
         startDate: new Date(reorderDate(span.startDate)),
@@ -48,7 +63,7 @@ const GenericCalendar = ({
     reformattedTimeSpans.current = orderBookedSpansByMonth({ timeSpans });
   }, [bookedTimeSpans]);
 
-  const _handleChange = (e) => {
+  const _handleChange = (e: Date | Date[]) => {
     /** it's a range */
     if (Array.isArray(e)) {
       setDateRange(e);
@@ -68,7 +83,7 @@ const GenericCalendar = ({
     }
   };
 
-  const _isDateInCurrentSelection = ({ selectedDate }) => {
+  const _isDateInCurrentSelection = ({ selectedDate }: { selectedDate: Date }) => {
     if (!Array.isArray(dateRange)) return false;
     let startDate = dateRange[0];
     let endDate = dateRange[1];
@@ -81,7 +96,7 @@ const GenericCalendar = ({
   /** check if tile is selected booked, otherwise etc
    * return value must be string, see lib
    */
-  const _getTileClassName = ({ selectedDate }) => {
+  const _getTileClassName = ({ selectedDate }: { selectedDate: Date }) => {
     let usedClassName = "";
     if (_isDateInCurrentSelection({ selectedDate })) {
       return classes.currentDateSelection;
@@ -93,13 +108,13 @@ const GenericCalendar = ({
   };
 
   /** handle disabled date */
-  const _isBookedDate = ({ selectedDate }) => {
+  const _isBookedDate = ({ selectedDate }: { selectedDate: Date }) => {
     let bookedSpansMap = reformattedTimeSpans.current;
     const selectedMonth = selectedDate.getMonth();
     let bookedSpansOfMonth = bookedSpansMap.get(selectedMonth);
     if (!bookedSpansOfMonth) return false;
     let bookedSpanIterator = bookedSpansOfMonth.values();
-    let array = [];
+    let array: Array<{ startDate: Date; endDate: Date }> = [];
     let result = bookedSpanIterator.next();
     while (!result.done) {
       array.push(result.value);
@@ -118,20 +133,20 @@ const GenericCalendar = ({
   return (
     <>
       <Calendar
-        value={dateRange}
-        onChange={(e) => _handleChange(e)}
+        value={dateRange as Date | [Date, Date] | null}
+        onChange={(e) => _handleChange(e as Date | Date[])}
         selectRange={true}
-        tileClassName={({ date }) => _getTileClassName({ selectedDate: date })}
+        tileClassName={({ date }: { date: Date }) => _getTileClassName({ selectedDate: date })}
       />
       {!isOpenModal && dateRange && (
           <h6>Vous n'avez aucune réservation aux dates sélectionnées</h6>
       )}
-      {isOpenModal && dateRange && (
+      {isOpenModal && dateRange && Array.isArray(dateRange) && (
         // <MotionText>
           <h6>
             Annuler ma réservation {" "}
             {dateRange.map((elem, i) => (
-              <span>{elem.toLocaleDateString()}{i === 0 && ' - '}</span>
+              <span key={i}>{elem.toLocaleDateString()}{i === 0 && ' - '}</span>
             ))}{" "}
           </h6>
         // </MotionText>

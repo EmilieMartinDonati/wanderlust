@@ -1,7 +1,5 @@
 
-import { useEffect, useLayoutEffect, useRef } from 'react';
-
-import PropTypes from 'prop-types';
+import { useEffect, useRef } from 'react';
 
 import { createUseStyles } from 'react-jss';
 
@@ -44,54 +42,58 @@ const useStyles = createUseStyles(() => ({
     }
 }))
 
+interface SwitchItemProps {
+  value?: boolean
+  onComplete?: (name: string) => void
+  type?: 'checkbox'
+  name?: string
+}
 
-const SwitchItem = ({ value = false, onComplete, type = 'checkbox', name = '' }) => {
+const SwitchItem = ({ value = false, onComplete, type = 'checkbox', name = '' }: SwitchItemProps) => {
 
   const styleRef = useRef(!value ? "start" : 'end');
 
   const classes = useStyles();
 
-  const _onDragStart = (e) => {
-    e.dataTransfer.setData('text/plain', e.target.id); /** necessary to retrieve it well we could put it into local storage etc */
+  const _onDragStart = (e: DragEvent) => {
+    e.dataTransfer!.setData('text/plain', (e.target as HTMLElement).id);
     setTimeout(() => {
-      e.target.classList.add(classes.hide);
-  }, 0);
+      (e.target as HTMLElement).classList.add(classes.hide);
+    }, 0);
   }
 
-  const _onDragEnter = (e) => {
-    e.preventDefault(); /** necessary to make the target valid */
+  const _onDragEnter = (e: DragEvent) => {
+    e.preventDefault();
   }
-  const _onDragOver = (e) => {
-    e.preventDefault(); /** necessary to make the target valid */
+  const _onDragOver = (e: DragEvent) => {
+    e.preventDefault();
   }
 
-  const _onDragLeave = (e) => {
+  const _onDragLeave = (e: DragEvent) => {
     /** unused so far */
   }
 
-  const _onDrop = (e) => {
-    /** we change justifyContent of container from start to end or the contrary to make it seem like it has moved */
+  const _onDrop = (e: DragEvent) => {
     const container = document.getElementById('drop-target');
+    if (!container) return;
     const classesToToggle = [classes.containerStart, classes.darkThemed, classes.containerEnd, classes.lightThemed];
     classesToToggle.forEach((className) => {
      container.classList.toggle(className);
     })
-    /** we also append the right image the to the dragged circle */
-    const id = e.dataTransfer.getData('text/plain');
+    const id = e.dataTransfer!.getData('text/plain');
     const draggable = document.getElementById(id);
-    draggable.classList.remove(classes.hide);
+    draggable?.classList.remove(classes.hide);
 
     onComplete && onComplete(name);
   }
 
   useEffect(() => {
-    /** draggable element */
-
     const button = document.getElementById('drag-checkbox');
-    button.setAttribute('draggable', true);
+    if (!button) return;
+    button.setAttribute('draggable', 'true');
     button.addEventListener('dragstart', _onDragStart);
-    /** droppable block */
     const container = document.getElementById('drop-target');
+    if (!container) return;
     const classesToAdd = value === false ? [classes.containerStart, classes.darkThemed] : [classes.containerEnd, classes.lightThemed];
     if (value === false) {
       styleRef.current = 'start';
@@ -102,15 +104,15 @@ const SwitchItem = ({ value = false, onComplete, type = 'checkbox', name = '' })
     classesToAdd.forEach((classToAdd) => {
       container.classList.add(classToAdd);
     })
-    
-    const dragDropEventListeners = [
+
+    const dragDropEventListeners: Array<{ name: string; function: (e: DragEvent) => void }> = [
       {name: "dragenter", function: _onDragEnter},
       {name: "dragleave", function: _onDragLeave},
       {name: 'dragover', function: _onDragOver},
       {name: "drop", function: _onDrop}];
 
-      dragDropEventListeners.forEach((listener) => {
-      container.addEventListener(listener.name, listener.function);
+    dragDropEventListeners.forEach((listener) => {
+      container.addEventListener(listener.name, listener.function as EventListener);
     })
 
   }, []);
@@ -120,10 +122,3 @@ const SwitchItem = ({ value = false, onComplete, type = 'checkbox', name = '' })
 }
 
 export default SwitchItem;
-
-SwitchItem.proptypes = {
-  value: PropTypes.bool,
-  onComplete: PropTypes.func,
-  type: PropTypes.oneOf(['checkbox']),
-  name: PropTypes.string,
-}

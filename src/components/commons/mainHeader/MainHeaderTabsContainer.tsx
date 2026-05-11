@@ -2,14 +2,21 @@ import React, { useState, useEffect, useMemo } from "react"
 
 import HeaderCollapsedModal from "./HeaderCollapsedModal"
 import Tabs from "../basics/Tabs"
+import type { Tab } from "../basics/Tabs"
 
 import { createPortal } from "react-dom"
 import FiltersSearchModal from "./mainHeaderModals/FiltersSearchModal"
+import type { User } from "../../../types"
 
-export const HOST_TABS = []
-export const OWNER_TABS = []
+interface HeaderTab extends Tab {
+  redirectAction: (() => void) | null
+  modalContent: React.ReactNode | null
+}
 
-export const DEFAULT_TABS = [{
+export const HOST_TABS: HeaderTab[] = []
+export const OWNER_TABS: HeaderTab[] = []
+
+export const DEFAULT_TABS: HeaderTab[] = [{
   key: "opportunities",
   label: "Opportunités de volontariat",
   redirectAction: null,
@@ -26,11 +33,15 @@ export const DEFAULT_TABS = [{
   modalContent: null
 }]
 
-const MainHeaderTabsContainer = ({ user = null }) => {
+interface MainHeaderTabsContainerProps {
+  user?: User | null
+}
 
-  const [selectedTabKey, setSelectedTabKey] = useState(null)
-  const [hoveredTabKey, setHoveredTabKey] = useState(null)
-  const [modalContent, setModalContent] = useState(null)
+const MainHeaderTabsContainer = ({ user = null }: MainHeaderTabsContainerProps) => {
+
+  const [selectedTabKey, setSelectedTabKey] = useState<string | null>(null)
+  const [hoveredTabKey, setHoveredTabKey] = useState<string | null>(null)
+  const [modalContent, setModalContent] = useState<React.ReactNode | null>(null)
 
   const [modalOpen, setModalOpen] = useState(true)
 
@@ -56,7 +67,7 @@ const MainHeaderTabsContainer = ({ user = null }) => {
     }
   }, [selectedTabKey])
 
-  const onSelectTab = (tabValue) => {
+  const onSelectTab = (tabValue: string) => {
     const currentTabValue = selectedTabKey
     if (tabValue === currentTabValue) {
       setSelectedTabKey(null)
@@ -66,7 +77,7 @@ const MainHeaderTabsContainer = ({ user = null }) => {
     }
   }
 
-  const onHoverTab = (tabValue) => setHoveredTabKey(tabValue)
+  const onHoverTab = (tabValue: string) => setHoveredTabKey(tabValue)
   const onLeaveTab = () => setHoveredTabKey(null)
 
   const tabsOptions = useMemo(() => {

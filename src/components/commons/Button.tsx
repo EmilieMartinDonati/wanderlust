@@ -51,9 +51,26 @@ const useStyles = createUseStyles((theme) => ({
   }
 }))
 
-const Button = ({ title = null, size, variant, onClick, mode = 'delete', parentClassName, color = 'navy', type='button' }) => {
+type ButtonSize = 'xs' | 'xl'
+type ButtonVariant = 'contained' | 'oval' | 'rounded'
+type ButtonColor = 'navy' | 'green' | 'black'
+type ButtonMode = 'delete' | 'add'
 
-  let chainedClassNames = [];
+interface ButtonProps {
+  title?: string | null
+  size?: ButtonSize
+  variant?: ButtonVariant
+  onClick?: () => void
+  mode?: ButtonMode
+  parentClassName?: string
+  color?: ButtonColor
+  type?: 'button' | 'submit' | 'reset'
+  children?: React.ReactNode
+}
+
+const Button = ({ title = null, size, variant, onClick, mode = 'delete', parentClassName, color = 'navy', type = 'button' }: ButtonProps) => {
+
+  let chainedClassNames: string[] = [];
 
   const classes = useStyles();
 

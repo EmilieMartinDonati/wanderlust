@@ -9,4 +9,5 @@ export type User = {
   numberOfRatings: number
   homes?: string[]
   isHost?: boolean
+  CCLevel?: number
 }

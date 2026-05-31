@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../store/hook";
 import classNames from "classnames";
 
 import { AnimatePresence } from "framer-motion";
@@ -87,7 +87,7 @@ const PerspectiveCarousel = ({ isModalOpen, array = [], backgroundColor}) => {
   const rootRef = useRef(null);
   const [inspectedWidth, setInspectedWidth] = useState(0);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setInspectedWidth(rootRef.current.clientWidth);

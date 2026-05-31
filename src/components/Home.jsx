@@ -1,9 +1,9 @@
 import { useQuery, useMutation } from 'react-query';
 import axios from 'axios';
-import {useDispatch, useSelector} from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../store/hook';
 import {useEffect} from 'react';
 
-import { getCurrentUser } from '../store';
+import { getCurrentUser } from '../reducers/app';
 
 import { _renderDaysInMonth } from '../actions/calendar';
 import HandmadeCalendarContainer from './HandmadeCalendarContainer';
@@ -34,9 +34,9 @@ const Home = () => {
 
 const { isLoading, isAuthenticated, error, user, loginWithRedirect, logout } = useAuth0();
 
-const dispatch = useDispatch();
+const dispatch = useAppDispatch();
 
-const currentUser = useSelector(getCurrentUser);
+const currentUser = useAppSelector(getCurrentUser);
 
 const classes = useStyles();
 

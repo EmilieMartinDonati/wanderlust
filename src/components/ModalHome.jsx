@@ -1,5 +1,4 @@
 import React, { forwardRef, useMemo } from "react";
-import { useDispatch } from "react-redux";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 // import { Navigate } from "react-router";
@@ -11,8 +10,6 @@ const ModalHome = forwardRef((props, ref) => {
   const { className, isVisible, children, pathname } = props;
 
   if (!isVisible) return null;
-
-  // const dispatch = useDispatch();
 
   // const navigate = useNavigate();
 

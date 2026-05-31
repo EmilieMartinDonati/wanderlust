@@ -2,8 +2,8 @@ import { createUseStyles } from "react-jss";
 import classNames from "classnames";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { useSelector, useDispatch } from "react-redux";
-import { isDay } from "../store/index";
+import { useAppDispatch, useAppSelector } from "../store/hook";
+import { isDay } from "../reducers/app";
 import { Link } from "react-router-dom";
 
 const useStyles = createUseStyles((theme) => ({
@@ -64,11 +64,11 @@ const useStyles = createUseStyles((theme) => ({
 }));
 
 const Header = ({ down = false, toggleModal, isModalOpen }) => {
-  const location = useSelector((state) => state.actionsApp.location);
+  const location = useAppSelector((state) => state.actionsApp.location);
 
-  const isItDay = useSelector(isDay);
+  const isItDay = useAppSelector(isDay);
   const classes = useStyles();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [animate, setAnimate] = useState(false);
 

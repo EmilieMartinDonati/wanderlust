@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import {
   Routes, Route
 } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector } from "./store/hook";
 import Calendar from "./components/Calendar";
 import Header from "./components/Header";
 import AdminSupervisionPanel from "./components/admin/adminSupervisionPanel";
@@ -30,6 +30,8 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 
+
+
 import Home from "./components/Home";
 
 import LandingPage from "./components/landing/landingPage";
@@ -37,19 +39,19 @@ import LandingPage from "./components/landing/landingPage";
 import AnimationsContainer from "./components/animationsInProgress/AnimationsContainer";
 
 import CreateListingContainer from "./components/listings/createListingContainer";
-import { getCurrentUser } from "./store";
+import { getCurrentUser } from "./reducers/app";
 
 const queryClient = new QueryClient();
 
 function App() {
 
-  const isProfileModalOpen = useSelector((state) => state.actionsApp.isProfileModalOpen);
+  const isProfileModalOpen = useAppSelector((state) => state.actionsApp.isProfileModalOpen);
 
-  const currentUser = useSelector(getCurrentUser)
+  const currentUser = useAppSelector(getCurrentUser)
 
   const [scrollPosition, setScrollPosition] = useState(0);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleScroll = () => {
     const position = window.pageYOffset;

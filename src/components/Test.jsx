@@ -3,7 +3,7 @@ import React, {
   useRef,
 } from "react";
 import { createUseStyles } from "react-jss";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../store/hook";
 import { toggleOnBoardingModal } from "../actions/owners";
 
 import ModalHome from "./ModalHome";
@@ -11,7 +11,7 @@ import ModalHome from "./ModalHome";
 import { Outlet } from "react-router";
 import OwnerInformation from "./ownerflow/OwnerInformation";
 
-import { CENTRAL_MODAL_HEIGHT, CENTRAL_MODAL_WIDTH } from "../actions/layout";
+import { CENTRAL_MODAL_HEIGHT, CENTRAL_MODAL_WIDTH } from "../styles/theme";
 
 const useStyles = createUseStyles((theme) => ({
   root: {
@@ -52,11 +52,11 @@ const Test = () => {
 
   const classes = useStyles({ modalWidth, modalHeight });
 
-  const isModalOpen = useSelector(
+  const isModalOpen = useAppSelector(
     (state) => state.ownerOnBoarding.onboardingModalOpen
   );
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const pathName = window.location.pathname;
   const splittedPathname = pathName.split("/");

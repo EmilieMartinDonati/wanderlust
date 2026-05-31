@@ -1,6 +1,6 @@
 import Header from "./Header";
 import PerspectiveCarousel from "./PerspectiveCarousel";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../store/hook";
 import { useRef, useState, useEffect} from "react";
 import { createUseStyles } from "react-jss";
 import classNames from "classnames";
@@ -17,8 +17,8 @@ const useStyles = createUseStyles({
 });
 
 const View = ({}) => {
-  const isItDay = useSelector((state) => state.actionsApp.isDay);
-  const isModalOpen = useSelector((state) => state.actionsApp.isProfileModalOpen);
+  const isItDay = useAppSelector((state) => state.actionsApp.isDay);
+  const isModalOpen = useAppSelector((state) => state.actionsApp.isProfileModalOpen);
 
   const classes = useStyles();
   return (
